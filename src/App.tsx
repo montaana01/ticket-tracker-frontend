@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { PATHS } from './constants/PATHS.ts';
+import { HomePage } from './pages/home';
+import { AdminPage } from './pages/admin';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="card">
-      <h1>Vite + React</h1>
-      <button onClick={() => setCount((count) => count + 1)}>
-        count is {count}
-      </button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path={PATHS.HOME} element={<HomePage />} />
+        <Route path={PATHS.ADMIN} element={<AdminPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
