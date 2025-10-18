@@ -17,7 +17,7 @@ export default tseslint.config(
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       globals: globals.browser,
     },
     plugins: {
@@ -35,6 +35,29 @@ export default tseslint.config(
       'react-compiler/react-compiler': 'error',
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
+      'no-alert': 'error',
+      'no-console': 'warn',
+      'no-duplicate-imports': 'error',
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/consistent-type-assertions': [
+        'error',
+        { assertionStyle: 'never' },
+      ],
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        { accessibility: 'explicit', overrides: { constructors: 'off' } },
+      ],
+      '@typescript-eslint/member-ordering': 'error',
+      'no-magic-numbers': 'off',
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        {
+          ignoreEnums: true,
+          ignore: [0, 1],
+        },
+      ],
+      'class-methods-use-this': 'error',
     },
     settings: {
       react: {
