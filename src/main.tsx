@@ -1,4 +1,4 @@
-import {createRoot} from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 
@@ -6,4 +6,4 @@ const rootElement = document.createElement('div');
 rootElement.id = 'root';
 document.body.appendChild(rootElement);
 
-createRoot(rootElement).render(<App/>);
+createRoot(rootElement).render(<App />);
