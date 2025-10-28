@@ -1,16 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
-import { PATHS } from './constants/PATHS.ts';
-import { HomePage } from './pages/home';
-import { AdminPage } from './pages/admin';
+import { Router } from './Router.tsx';
+import { AuthProvider } from './providers/AuthProvider.tsx';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={PATHS.HOME} element={<HomePage />} />
-        <Route path={PATHS.ADMIN} element={<AdminPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <Router />
+    </AuthProvider>
   );
 }
 
