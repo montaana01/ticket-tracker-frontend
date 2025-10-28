@@ -18,7 +18,7 @@ export const ThemeSwitcher = () => {
   };
 
   return (
-    <div className={styles.switcherContainer}>
+    <div className={styles.switcherContainer} title="Theme switcher">
       <label id="switcher" className={styles.switcher}>
         <input
           id="switcher"
