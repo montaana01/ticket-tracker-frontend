@@ -1,0 +1,65 @@
+body {
+  --popup-shadow: 0px 8px 24px rgb(0 0 0 / 15%);
+  --maximize: #34c759;
+  --close: #ff5f57;
+  --minimize: #febc2e;
+  --button-bg: #e5e5e5;
+  --switcher-color: #fff;
+}
+
+body.light {
+  --bg-color: #e9f1ff;
+  --text-color: #1d1d1f;
+  --border-color: #000;
+  --inverted-border-color: #fff;
+}
+
+body.dark {
+  --bg-color: #3f1d3c;
+  --text-color: #f5f5f7;
+  --border-color: #fff;
+  --inverted-border-color: #000;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+
+  span {
+    display: none;
+  }
+}
+
+.link {
+  cursor: pointer;
+
+  &:hover {
+    scale: 1.1;
+  }
+}
+
+.btn {
+  cursor: pointer;
+
+  display: block;
+
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+
+  font-size: 20px;
+  color: var(--text-color);
+  text-transform: uppercase;
+
+  background: var(--footer-bg-color);
+
+  transition: 0.6s all;
+
+  &:hover {
+    scale: 1.1;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
