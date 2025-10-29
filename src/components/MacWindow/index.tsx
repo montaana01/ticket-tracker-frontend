@@ -8,7 +8,16 @@ export const MacWindow = ({ children }: { children: ReactNode }) => {
 
   const handleClose = () => {
     setIsVisible(false);
+    document.removeEventListener('keydown', handleKeyDown);
   };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      handleClose();
+    }
+  };
+
+  document.addEventListener('keydown', handleKeyDown);
 
   const handleMinimize = () => {
     setIsMinimized((prev) => !prev);
@@ -17,7 +26,7 @@ export const MacWindow = ({ children }: { children: ReactNode }) => {
   if (!isVisible) return null;
 
   return (
-    <div className={styles.modal}>
+    <div className={styles.modal} onClick={handleClose}>
       <div
         className={`${container.container} ${styles.modalWrapper} ${
           isMinimized ? styles.minimize : ''
