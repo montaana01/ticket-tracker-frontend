@@ -14,9 +14,11 @@ export const AuthButtons = () => {
             <NavLink to={PATHS.ADMIN}>Admin Panel</NavLink>
           </li>
         )}
-        <li>
-          <NavLink to={PATHS.TICKETS}>Tickets</NavLink>
-        </li>
+        {role !== 'admin' && (
+          <li>
+            <NavLink to={PATHS.TICKETS}>Tickets</NavLink>
+          </li>
+        )}
         <li>
           <NavLink to={PATHS.PROFILE}>User info</NavLink>
         </li>
