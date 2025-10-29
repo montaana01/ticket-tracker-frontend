@@ -1,6 +1,11 @@
+import type { ApiResponseType } from '../types/api.ts';
+
 const basePath = 'https://api.tickets.yakovlevdev.com';
 
-export const fetchRequest = async (url: string, options: RequestInit = {}) => {
+export const fetchRequest = async <T>(
+  url: string,
+  options: RequestInit = {}
+): Promise<T> => {
   const response = await fetch(basePath + url, {
     ...options,
     headers: {
@@ -9,6 +14,13 @@ export const fetchRequest = async (url: string, options: RequestInit = {}) => {
     },
     credentials: 'include',
   });
+
   if (!response.ok) throw new Error(`Error: ${response.status}`);
-  return response.json();
+
+  const data: ApiResponseType<T> = await response.json();
+  if (!data.data) {
+    throw new Error('No data received from server');
+  }
+
+  return data.data;
 };
