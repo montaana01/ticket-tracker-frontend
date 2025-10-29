@@ -1,5 +1,6 @@
 .modal {
   position: absolute;
+  z-index: 10;
   top: 0;
   left: 0;
 
@@ -8,4 +9,71 @@
 
   width: 100dvw;
   height: 100dvh;
+
+  background: var(--popup-back);
+
+  transition: unset;
+
+  &Wrapper {
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    overflow: hidden;
+
+    width: 100%;
+    border: 1px solid var(--popup-shadow);
+    border-radius: 12px;
+
+    background: var(--bg-color);
+    box-shadow: var(--popup-shadow);
+
+    transition: all 0.3s ease;
+
+    &.minimize {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 0.99;
+    }
+  }
+
+  &Header {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 15px;
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
+
+    &Close {
+      background: var(--close);
+    }
+
+    &Minimize {
+      background: var(--minimize);
+    }
+
+    &Button {
+      cursor: pointer;
+
+      width: 12px;
+      height: 12px;
+      border: none;
+      border-radius: 100%;
+
+      transition: all 0.2s;
+
+      &:hover {
+        scale: 1.1;
+      }
+    }
+  }
+
+  &Content {
+    padding: 24px;
+  }
 }
