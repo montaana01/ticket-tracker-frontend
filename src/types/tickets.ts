@@ -23,3 +23,8 @@ export type TicketType = {
   tag_name: string;
   author_name: string;
 };
+
+export type CreateTicketFormType = {
+  onCancel: VoidFunction;
+  onSuccess: VoidFunction;
+};

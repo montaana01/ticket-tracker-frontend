@@ -22,3 +22,12 @@ export type AuthGuardType = {
 export type PublicOnlyGuardType = {
   children: ReactElement;
 };
+
+export type AuthFormProps = {
+  title: string;
+  error: string | null;
+  onSubmit: (data: {
+    username: string;
+    password: string;
+  }) => Promise<void> | void;
+};
