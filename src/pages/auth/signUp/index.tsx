@@ -1,28 +1,18 @@
-import React, { useState } from 'react';
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  Box,
-  Alert,
-} from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../../hooks/useAuth.ts';
 import { PATHS } from '../../../constants/PATHS.ts';
+import { AuthForm } from '../../../components/ui/AuthForm';
 
 export const SignUpPage = () => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (data: { username: string; password: string }) => {
     setError(null);
 
-    const result = await signUp(username, password);
+    const result = await signUp(data.username, data.password);
     if (result.success) {
       navigate(PATHS.HOME);
     } else {
@@ -30,38 +20,5 @@ export const SignUpPage = () => {
     }
   };
 
-  return (
-    <Container maxWidth="sm" sx={{ mt: 6 }}>
-      <Typography variant="h5" gutterBottom>
-        Sign up
-      </Typography>
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{ display: 'grid', gap: 2 }}
-      >
-        <TextField
-          label="Username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          required
-        />
-        <TextField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
-        <Button variant="contained" type="submit">
-          Sign up
-        </Button>
-      </Box>
-    </Container>
-  );
+  return <AuthForm title="Sign up" error={error} onSubmit={handleSubmit} />;
 };
