@@ -82,7 +82,7 @@ export const MainPage = () => {
           )}
         </Box>
       </Container>
-      <MacWindow>
+      <MacWindow defaultOpen>
         <Box
           sx={{
             display: 'flex',
