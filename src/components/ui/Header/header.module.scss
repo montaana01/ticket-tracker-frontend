@@ -11,6 +11,10 @@
     align-items: center;
 
     height: 70px;
+
+    @media (width <=586px) {
+      grid-template-columns: 1fr 3fr;
+    }
   }
 
   &Logo {
@@ -18,6 +22,10 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+
+    @media (width <=586px) {
+      display: none;
+    }
   }
 
   &Navigation {
@@ -38,13 +46,25 @@
       li {
         text-decoration: underline;
       }
+
+      @media (width <= 968px) {
+        gap: 2rem;
+      }
+
+      @media (width <=468px) {
+        gap: 1rem;
+      }
     }
 
     &Buttons {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.1rem;
       align-items: center;
+    }
+
+    @media (width <=468px) {
+      gap: 1rem;
     }
   }
 }
