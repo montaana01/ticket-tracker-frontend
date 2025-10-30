@@ -22,9 +22,18 @@ export type TicketType = {
   status_name: string;
   tag_name: string;
   author_name: string;
+  message_text?: string;
+  admin_name?: string;
 };
 
 export type CreateTicketFormType = {
   onCancel: VoidFunction;
   onSuccess: VoidFunction;
+};
+
+export type TicketDetailsType = {
+  ticket: TicketType | null;
+  isAdmin?: boolean;
+  onClose: VoidFunction;
+  onUpdate?: VoidFunction;
 };
