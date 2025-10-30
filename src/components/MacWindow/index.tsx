@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './MacWindow.module.scss';
 import container from './../ui/Container/container.module.scss';
 import type { MacWindowType } from '../../types/modal.ts';
@@ -29,7 +29,19 @@ export const MacWindow = ({
     }
   };
 
-  document.addEventListener('keydown', handleKeyDown);
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open]);
 
   const handleMinimize = () => {
     setIsMinimized((prev) => !prev);

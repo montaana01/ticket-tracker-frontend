@@ -1,5 +1,5 @@
 .modal {
-  position: absolute;
+  position: fixed;
   z-index: 10;
   top: 0;
   left: 0;
@@ -15,15 +15,14 @@
   transition: unset;
 
   &Wrapper {
-    position: fixed;
     z-index: 100;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     width: 100%;
+    max-height: 90dvh;
+    margin-top: 50px;
     border: 1px solid var(--popup-shadow);
     border-radius: 12px;
 
@@ -42,6 +41,7 @@
 
   &Header {
     display: flex;
+    flex-shrink: 0;
     column-gap: 8px;
     align-items: center;
     justify-content: flex-start;
@@ -74,6 +74,8 @@
   }
 
   &Content {
+    overflow-y: auto;
+    flex: 1;
     padding: 24px;
   }
 }
