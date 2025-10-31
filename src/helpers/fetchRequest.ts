@@ -1,5 +1,3 @@
-import type { ApiResponseType } from '../types/api.ts';
-
 const basePath = 'https://api.tickets.yakovlevdev.com';
 
 export const fetchRequest = async <T>(
@@ -15,12 +13,13 @@ export const fetchRequest = async <T>(
     credentials: 'include',
   });
 
-  if (!response.ok) throw new Error(`Error: ${response.status}`);
+  const data = await response.json();
 
-  const data: ApiResponseType<T> = await response.json();
-  if (!data.data) {
-    throw new Error('No data received from server');
+  if (!response.ok) {
+    const errorMessage =
+      data.error || data.message || `HTTP error ${response.status}`;
+    throw new Error(errorMessage);
   }
 
-  return data.data;
+  return data;
 };

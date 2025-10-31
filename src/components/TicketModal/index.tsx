@@ -47,8 +47,12 @@ export const TicketDetails = ({
     if (isAdmin && ticket) {
       (async () => {
         try {
-          setStatuses(await fetchRequest('/api/statuses'));
-          setTags(await fetchRequest('/api/tags'));
+          const statusesData = await fetchRequest<{ data: StatusType[] }>(
+            '/api/statuses'
+          );
+          setStatuses(statusesData.data);
+          const tagsData = await fetchRequest<{ data: TagType[] }>('/api/tags');
+          setTags(tagsData.data);
         } catch (error) {
           console.error('Failed to load admin data:', error);
         }
@@ -67,8 +71,10 @@ export const TicketDetails = ({
       });
       setErrorMessage({ type: 'success', text: 'Status updated successfully' });
       onUpdate?.();
-    } catch {
-      setErrorMessage({ type: 'error', text: 'Failed to update status' });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to update status';
+      setErrorMessage({ type: 'error', text: message });
     } finally {
       setLoading(false);
     }
@@ -85,8 +91,10 @@ export const TicketDetails = ({
       });
       setErrorMessage({ type: 'success', text: 'Tag added successfully' });
       onUpdate?.();
-    } catch {
-      setErrorMessage({ type: 'error', text: 'Failed to add tag' });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to add tag';
+      setErrorMessage({ type: 'error', text: message });
     } finally {
       setLoading(false);
     }
@@ -104,8 +112,10 @@ export const TicketDetails = ({
       setMessage('');
       setErrorMessage({ type: 'success', text: 'Reply sent successfully' });
       onUpdate?.();
-    } catch {
-      setErrorMessage({ type: 'error', text: 'Failed to send reply' });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to send reply';
+      setErrorMessage({ type: 'error', text: message });
     } finally {
       setLoading(false);
     }

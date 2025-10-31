@@ -9,11 +9,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async (): Promise<void> => {
     try {
-      const data = await fetchRequest<{ role: string }>('/api/user/profile');
-      setRole(data.role);
-    } catch (error) {
+      const data = await fetchRequest<{ data: { role: string } }>(
+        '/api/user/profile'
+      );
+      setRole(data.data.role);
+    } catch {
       setRole(null);
-      console.error('Auth check failed:', error);
     } finally {
       setIsLoading(false);
     }
@@ -28,12 +29,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string
   ): Promise<AuthResponse> => {
     try {
-      const data = await fetchRequest<{ role: string }>('/auth/sign-in', {
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-      });
-      setRole(data.role);
-      return { success: true, role: data.role };
+      const data = await fetchRequest<{ data: { role: string } }>(
+        '/auth/sign-in',
+        {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+        }
+      );
+      setRole(data.data.role);
+      return { success: true, role: data.data.role };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Sign in failed';
       return {
@@ -48,12 +52,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string
   ): Promise<AuthResponse> => {
     try {
-      const data = await fetchRequest<{ role: string }>('/auth/sign-up', {
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-      });
-      setRole(data.role);
-      return { success: true, role: data.role };
+      const data = await fetchRequest<{ data: { role: string } }>(
+        '/auth/sign-up',
+        {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+        }
+      );
+      setRole(data.data.role);
+      return { success: true, role: data.data.role };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Sign up failed';
       return {
