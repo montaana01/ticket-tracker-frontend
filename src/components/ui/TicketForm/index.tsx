@@ -20,12 +20,13 @@ export const CreateTicketForm = ({
   const [tagId, setTagId] = useState<number | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const submit = async (event) => {
+  const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     setSubmitting(true);
+    setError(null);
     try {
       await fetchRequest('/api/tickets', {
         method: 'POST',
@@ -36,8 +37,10 @@ export const CreateTicketForm = ({
         }),
       });
       onSuccess();
-    } catch {
-      setError(true);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to create ticket';
+      setError(message);
       setSubmitting(false);
       setIsLoading(false);
     }
@@ -50,7 +53,7 @@ export const CreateTicketForm = ({
   if (error)
     return (
       <Alert severity="error" variant="outlined">
-        Error while creating ticket. Please try again later.
+        {error}
       </Alert>
     );
 

@@ -12,17 +12,18 @@ export const TicketsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<TicketType | null>(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const data = await fetchRequest<TicketType[]>('/api/tickets', {
-        method: 'GET',
-      });
-      setTickets(data);
-    } catch {
-      setError(true);
+      const data = await fetchRequest<{ data: TicketType[] }>('/api/tickets');
+      setTickets(data.data);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to load tickets';
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -91,12 +92,7 @@ export const TicketsPage = () => {
     },
   ];
 
-  if (error)
-    return (
-      <Alert severity="warning">
-        Error while loading requests from server!
-      </Alert>
-    );
+  if (error) return <Alert severity="warning">{error}</Alert>;
 
   return (
     <Container>

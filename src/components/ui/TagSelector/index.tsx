@@ -23,28 +23,29 @@ type TagSelectorProps = {
 export const TagSelector = ({ value, onChange }: TagSelectorProps) => {
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTags = async () => {
       try {
-        const data = await fetchRequest<Tag[]>('/api/tags', { method: 'GET' });
-        setTags(data);
-        if (data.length > 0 && value === undefined) {
-          // по умолчанию выбираем первый тег по id
-          const first = [...data].sort((a, b) => a.id - b.id)[0];
+        const data = await fetchRequest<{ data: Tag[] }>('/api/tags');
+        setTags(data.data);
+        if (data.data.length > 0 && value === undefined) {
+          const first = [...data.data].sort((a, b) => a.id - b.id)[0];
           onChange(first.id);
         }
-      } catch {
-        setError(true);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : 'Failed to load tags';
+        setError(message);
       } finally {
         setLoading(false);
       }
     };
     loadTags();
-  }, []);
+  }, [onChange, value]);
 
-  if (error) return <Alert severity="error">Tags fetch error.</Alert>;
+  if (error) return <Alert severity="error">{error}</Alert>;
 
   if (loading) return <CircularProgress size={24} />;
 
