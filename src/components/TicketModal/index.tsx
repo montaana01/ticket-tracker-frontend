@@ -237,7 +237,7 @@ export const TicketDetails = ({
             <Select
               value={ticket.status_id}
               label="Status"
-              onChange={(e) => changeStatus(e.target.value)}
+              onChange={(e) => changeStatus(Number(e.target.value))}
             >
               {statuses.map((status: StatusType) => (
                 <MenuItem key={status.id} value={status.name}>
@@ -261,11 +261,9 @@ export const TicketDetails = ({
               <Chip label={ticket.tag_name} />
               <Select
                 onChange={(e) => addTag(Number(e.target.value))}
-                displayEmpty
                 disabled={loading}
                 size="small"
               >
-                <MenuItem value="">Add tag</MenuItem>
                 {tags.map((tag: TagType) => (
                   <MenuItem key={tag.id} value={tag.id}>
                     {tag.name}
