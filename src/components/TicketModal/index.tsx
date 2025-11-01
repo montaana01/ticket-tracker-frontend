@@ -37,7 +37,7 @@ export const TicketDetails = ({
   const [statuses, setStatuses] = useState<StatusType[]>([]);
   const [tags, setTags] = useState<TagType[]>([]);
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<{
     type: 'success' | 'error';
     text: string;
@@ -130,7 +130,7 @@ export const TicketDetails = ({
   }
 
   return (
-    <Box sx={{ margin: '0 auto' }}>
+    <Box>
       <Box
         sx={{
           display: 'flex',
@@ -140,25 +140,28 @@ export const TicketDetails = ({
         }}
       >
         <Typography variant="h4" fontWeight="bold">
-          Title: {ticket.title}
+          Ticket title: <i>{ticket.title}</i>
         </Typography>
-        {isAdmin && <Edit color="action" />}
+        {isAdmin && <Edit />}
       </Box>
 
       {errorMessage && (
         <Alert
           severity={errorMessage.type}
-          sx={{ mb: 2 }}
           onClose={() => setErrorMessage(null)}
         >
           {errorMessage.text}
         </Alert>
       )}
 
-      <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
-        <Typography variant="h6" gutterBottom>
+      <Paper
+        variant="outlined"
+        sx={{ p: 2, mb: 3, background: 'var(--card-color)' }}
+      >
+        <Typography variant="h6" gutterBottom textAlign={'start'}>
           Description
         </Typography>
+        <Divider />
         <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
           {ticket.description}
         </Typography>
@@ -169,6 +172,7 @@ export const TicketDetails = ({
           icon={<Assignment />}
           label={ticket.status_name}
           color={'default'}
+          sx={{ color: 'var(--text-color)' }}
           variant="outlined"
         />
         <Chip
@@ -177,48 +181,52 @@ export const TicketDetails = ({
           color="secondary"
           variant="outlined"
         />
+        {/*TODO: create array of tags!*/}
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Chip icon={<Label />} color="secondary" variant="outlined" />
+        </Box>
       </Box>
 
-      <Box sx={{ display: 'grid', gap: 1.5 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Person sx={{ mr: 1, color: 'text.secondary' }} />
-          <Typography variant="body2" color="text.secondary">
-            Author: {ticket.author_name}
-          </Typography>
-        </Box>
+      <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'grid', gap: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Person sx={{ mr: 1 }} />
+            <Typography variant="body2">Author: {authorName}</Typography>
+          </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <AccessTime sx={{ mr: 1, color: 'text.secondary' }} />
-          <Typography variant="body2" color="text.secondary">
-            Created: {ticket.created_at}
-          </Typography>
-        </Box>
-
-        {ticket.updated_at !== ticket.created_at && (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <AccessTime sx={{ mr: 1, color: 'text.secondary' }} />
             <Typography variant="body2" color="text.secondary">
-              Updated: {ticket.updated_at}
+              Created: {ticket.created_at}
             </Typography>
           </Box>
+
+          {ticket.updated_at !== ticket.created_at && (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <AccessTime sx={{ mr: 1, color: 'text.secondary' }} />
+              <Typography variant="body2" color="text.secondary">
+                Updated: {ticket.updated_at}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+
+        {ticket.message_id && (
+          <Paper variant="outlined" sx={{ p: 2, mb: 3, bgcolor: 'grey.50' }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Message sx={{ mr: 1 }} />
+              Admin Response
+            </Typography>
+            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+              {ticket.message_text || 'No message from admin yet.'}
+            </Typography>
+          </Paper>
         )}
       </Box>
-
-      {ticket.message_id && (
-        <Paper variant="outlined" sx={{ p: 2, mb: 3, bgcolor: 'grey.50' }}>
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{ display: 'flex', alignItems: 'center' }}
-          >
-            <Message sx={{ mr: 1 }} />
-            Admin Response
-          </Typography>
-          <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-            {ticket.message_text || 'No message from admin yet.'}
-          </Typography>
-        </Paper>
-      )}
 
       {isAdmin && (
         <>
@@ -232,7 +240,7 @@ export const TicketDetails = ({
             Admin Controls
           </Typography>
 
-          <FormControl fullWidth sx={{ mb: 2 }} disabled={loading}>
+          <FormControl fullWidth sx={{ mb: 2 }} disabled={isLoading}>
             <InputLabel>Status</InputLabel>
             <Select
               value={ticket.status_id}
@@ -261,7 +269,7 @@ export const TicketDetails = ({
               <Chip label={ticket.tag_name} />
               <Select
                 onChange={(e) => addTag(Number(e.target.value))}
-                disabled={loading}
+                disabled={isLoading}
                 size="small"
               >
                 {tags.map((tag: TagType) => (
@@ -284,12 +292,12 @@ export const TicketDetails = ({
             onChange={(e) => setMessage(e.target.value)}
             fullWidth
             sx={{ mb: 2 }}
-            disabled={loading}
+            disabled={isLoading}
           />
           <Button
             variant="contained"
             onClick={sendMessage}
-            disabled={!message || loading}
+            disabled={!message || isLoading}
             sx={{ mb: 3 }}
           >
             Send Reply
@@ -299,7 +307,7 @@ export const TicketDetails = ({
         </>
       )}
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 3 }}>
-        <Button variant="outlined" onClick={onClose} disabled={loading}>
+        <Button variant="outlined" onClick={onClose} disabled={isLoading}>
           Close
         </Button>
       </Box>
