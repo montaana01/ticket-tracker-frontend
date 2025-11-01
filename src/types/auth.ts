@@ -31,3 +31,16 @@ export type AuthFormProps = {
     password: string;
   }) => Promise<void> | void;
 };
+
+export type SignInServerResponse = {
+  data: {
+    role: string;
+  };
+};
+
+export type SignUpServerResponse = {
+  data: {
+    id: number;
+  };
+  message: string;
+};

@@ -14,13 +14,13 @@ import {
 export const ProfilePage = () => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
-    fetchRequest<ProfileType>('/api/user/profile')
-      .then((data) => setProfile(data))
-      .catch(() => setError(true))
+    fetchRequest<{ data: ProfileType }>('/api/user/profile')
+      .then((profile) => setProfile(profile.data))
+      .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, []);
   if (loading) {
@@ -29,7 +29,7 @@ export const ProfilePage = () => {
   if (error)
     return (
       <Alert severity="error" variant="outlined">
-        Error fetching user profile. Please try again later.
+        {error}
       </Alert>
     );
   if (!profile)
