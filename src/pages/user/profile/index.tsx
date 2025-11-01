@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Typography,
 } from '@mui/material';
+import styles from '../../../styles/base/mui.module.scss';
 
 export const ProfilePage = () => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
@@ -40,29 +41,26 @@ export const ProfilePage = () => {
     );
 
   return (
-    <Card variant="outlined">
-      <CardContent sx={{ p: 3 }}>
+    <Card>
+      <CardContent className={styles.card}>
         <Typography variant="h5" component="h1" gutterBottom fontWeight="bold">
           User Profile
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-            mt: 2,
-          }}
-        >
+        <Box className={styles.cardBox}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography
               variant="body1"
               fontWeight="medium"
-              sx={{ minWidth: 80 }}
+              className={styles.cardItem}
             >
               ID:
             </Typography>
-            <Chip label={profile.id} size="small" variant="outlined" />
+            <Chip
+              label={profile.id}
+              size="small"
+              variant="outlined"
+              sx={{ color: 'var(--text-color)' }}
+            />
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -92,14 +90,10 @@ export const ProfilePage = () => {
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography
-              variant="body1"
-              fontWeight="medium"
-              sx={{ minWidth: 80 }}
-            >
+            <Typography variant="body1" fontWeight="medium">
               Created at:
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2">
               {new Date(profile.created_at).toLocaleDateString()}
             </Typography>
           </Box>

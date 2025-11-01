@@ -88,6 +88,7 @@ export const TicketsPage = () => {
     {
       field: 'created_at',
       headerName: 'Created',
+      renderCell: (params) => new Date(params.value).toLocaleDateString(),
       width: 120,
     },
   ];
@@ -103,21 +104,16 @@ export const TicketsPage = () => {
         </Button>
       </Box>
 
-      <div style={{ height: 600, width: '100%' }}>
-        <DataGrid
-          rows={tickets}
-          columns={columns}
-          loading={loading}
-          getRowId={(row) => row.id}
-          onRowClick={handleRowClick}
-          sx={{
-            cursor: 'pointer',
-            '& .MuiDataGrid-row:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            },
-          }}
-        />
-      </div>
+      <DataGrid
+        rows={tickets}
+        columns={columns}
+        loading={loading}
+        getRowId={(row) => row.id}
+        onRowClick={handleRowClick}
+        sx={{
+          cursor: 'pointer',
+        }}
+      />
 
       <MacWindow isOpen={isCreateOpen} onClose={handleCloseModal}>
         <CreateTicketForm
