@@ -1,10 +1,8 @@
-const basePath = 'https://api.tickets.yakovlevdev.com';
-
 export const fetchRequest = async <T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> => {
-  const response = await fetch(basePath + url, {
+  const response = await fetch(import.meta.env.VITE_API_BASE_PATH + url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
