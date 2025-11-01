@@ -11,8 +11,10 @@ import {
 import { useNavigate } from 'react-router';
 import { PATHS } from '../../constants/PATHS';
 import { useAuth } from '../../hooks/useAuth';
+import { useState } from 'react';
 
 export const MainPage = () => {
+  const [isInfoOpen, setInfoOpen] = useState(false);
   const navigate = useNavigate();
   const { role } = useAuth();
 
@@ -81,8 +83,11 @@ export const MainPage = () => {
             </Button>
           )}
         </Box>
+        <Button variant="text" size="large" onClick={() => setInfoOpen(true)}>
+          Open author&#39;s info
+        </Button>
       </Container>
-      <MacWindow defaultOpen>
+      <MacWindow isOpen={isInfoOpen} onClose={() => setInfoOpen(false)}>
         <Box
           sx={{
             display: 'flex',
