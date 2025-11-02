@@ -48,28 +48,44 @@ export const CreateTicketForm = ({
 
   const handleTagChange = useCallback((id: number) => setTagId(id), []);
 
+  const fieldStyles = {
+    mb: 2,
+    width: '85%',
+    '& .MuiInputLabel-root': {
+      color: 'var(--text-color)',
+    },
+    '& .MuiOutlinedInput-root': {
+      color: 'var(--text-color)',
+      backgroundColor: 'var(--card-color)',
+      '&.Mui-focused fieldset': {
+        borderColor: 'var(--bg-color)',
+      },
+      '& .MuiInputBase-input': {
+        color: 'var(--text-color)',
+      },
+    },
+  };
+
   if (isLoading) {
     return <CircularProgress color="secondary" />;
   }
-
-  if (error)
-    return (
-      <Alert severity="error" variant="outlined">
-        {error}
-      </Alert>
-    );
 
   return (
     <Box component="form" onSubmit={submit}>
       <Typography variant="h2" typography="h5" gutterBottom>
         Create ticket
       </Typography>
+      {error && (
+        <Alert severity="error" variant="outlined">
+          {error}
+        </Alert>
+      )}
       <TextField
         label="Title"
         value={title}
         onChange={(event) => setTitle(event.target.value)}
         required
-        sx={{ mb: 2, width: '85%' }}
+        sx={fieldStyles}
       />
       <TextField
         label="Description"
@@ -78,7 +94,7 @@ export const CreateTicketForm = ({
         multiline
         rows={6}
         required
-        sx={{ mb: 2, width: '85%' }}
+        sx={fieldStyles}
       />
       <Box
         sx={{

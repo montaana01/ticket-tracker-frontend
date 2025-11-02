@@ -44,15 +44,53 @@ export const TagSelector = ({ value, onChange }: TagSelectorType) => {
   return (
     <Box sx={{ minWidth: 200 }}>
       <FormControl fullWidth size="small">
-        <InputLabel id="tag-select-label">Tag</InputLabel>
+        <InputLabel
+          id="tag-select-label"
+          sx={{
+            color: 'var(--text-color)',
+            '&.Mui-focused': {
+              color: 'var(--text--color)',
+            },
+          }}
+        >
+          Tag
+        </InputLabel>
         <Select
           labelId="tag-select-label"
           value={value ?? ''}
           label="Tag"
           onChange={(event) => onChange(Number(event.target.value))}
+          sx={{
+            color: 'var(--text-color)',
+            backgroundColor: 'var(--card-color)',
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'var(--bg-color)',
+            },
+            '& .MuiSvgIcon-root': {
+              color: 'var(--text-color)',
+            },
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                backgroundColor: 'var(--bg-color)',
+                color: 'var(--text-color)',
+                '& .MuiMenuItem-root': {
+                  color: 'var(--text-color)',
+                },
+              },
+            },
+          }}
         >
           {tags.map((tag) => (
-            <MenuItem key={tag.id} value={tag.id}>
+            <MenuItem
+              key={tag.id}
+              value={tag.id}
+              sx={{
+                color: 'var(--text-color)',
+                backgroundColor: 'var(--bg-color)',
+              }}
+            >
               {tag.name}
             </MenuItem>
           ))}
