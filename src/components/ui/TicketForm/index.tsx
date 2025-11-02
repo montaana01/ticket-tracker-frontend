@@ -10,6 +10,7 @@ import {
 import { fetchRequest } from '../../../helpers/fetchRequest.ts';
 import type { CreateTicketFormType } from '../../../types/tickets.ts';
 import { TagSelector } from '../TagSelector';
+import { fieldStyles } from '../../../styles/components/form.ts';
 
 export const CreateTicketForm = ({
   onCancel,
@@ -48,15 +49,9 @@ export const CreateTicketForm = ({
 
   const handleTagChange = useCallback((id: number) => setTagId(id), []);
 
-  const fieldStyles = {
+  const localFieldStyles = {
     mb: 2,
     width: '100%',
-    '& .MuiInputLabel-root': {
-      color: 'var(--text-color)',
-      '&.Mui-focused': {
-        color: 'var(--text-color)',
-      },
-    },
     '& .MuiOutlinedInput-root': {
       color: 'var(--text-color)',
       backgroundColor: 'var(--card-color)',
@@ -93,7 +88,7 @@ export const CreateTicketForm = ({
             value={title}
             onChange={(event) => setTitle(event.target.value)}
             required
-            sx={fieldStyles}
+            sx={Object.assign(fieldStyles, localFieldStyles)}
           />
           <TextField
             label="Description"
@@ -102,7 +97,7 @@ export const CreateTicketForm = ({
             multiline
             rows={6}
             required
-            sx={fieldStyles}
+            sx={Object.assign(fieldStyles, localFieldStyles)}
           />
         </>
       )}

@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import type { AuthFormProps } from '../../../types/auth.ts';
+import { fieldStyles } from '../../../styles/components/form.ts';
 
 export const AuthForm = ({
   title,
@@ -22,25 +23,6 @@ export const AuthForm = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ username, password });
-  };
-
-  const fieldStyles = {
-    '& .MuiInputLabel-root': {
-      color: 'var(--text-color)',
-      '&.Mui-focused': {
-        color: 'var(--text-color)',
-      },
-    },
-    '& .MuiOutlinedInput-root': {
-      color: 'var(--text-color)',
-      '&.Mui-focused fieldset': {
-        borderColor: 'var(--text-color)',
-        color: 'var(--text-color)',
-      },
-      '& .MuiInputBase-input': {
-        color: 'var(--text-color)',
-      },
-    },
   };
 
   return (
