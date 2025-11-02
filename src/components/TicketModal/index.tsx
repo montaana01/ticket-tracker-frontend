@@ -38,7 +38,7 @@ export const TicketDetails = ({
   const [tags, setTags] = useState<TagType[]>([]);
   const [message, setMessage] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<{
+  const [responseMessage, setResponseMessage] = useState<{
     type: 'success' | 'error';
     text: string;
   } | null>(null);
@@ -65,16 +65,19 @@ export const TicketDetails = ({
 
     setLoading(true);
     try {
-      await fetchRequest(`/api/ticket/${ticket.id}/status`, {
+      await fetchRequest(`/api/admin/ticket/${ticket.id}/status`, {
         method: 'PUT',
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ status_id: newStatus }),
       });
-      setErrorMessage({ type: 'success', text: 'Status updated successfully' });
+      setResponseMessage({
+        type: 'success',
+        text: 'Status updated successfully',
+      });
       onUpdate?.();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Failed to update status';
-      setErrorMessage({ type: 'error', text: message });
+      setResponseMessage({ type: 'error', text: message });
     } finally {
       setLoading(false);
     }
@@ -85,16 +88,16 @@ export const TicketDetails = ({
 
     setLoading(true);
     try {
-      await fetchRequest(`/api/ticket/${ticket.id}/tag`, {
+      await fetchRequest(`/api/admin/ticket/${ticket.id}/tag`, {
         method: 'PUT',
         body: JSON.stringify({ tag_id: tagId }),
       });
-      setErrorMessage({ type: 'success', text: 'Tag added successfully' });
+      setResponseMessage({ type: 'success', text: 'Tag added successfully' });
       onUpdate?.();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Failed to add tag';
-      setErrorMessage({ type: 'error', text: message });
+      setResponseMessage({ type: 'error', text: message });
     } finally {
       setLoading(false);
     }
@@ -110,13 +113,39 @@ export const TicketDetails = ({
         body: JSON.stringify({ ticketId: ticket.id, message: message }),
       });
       setMessage('');
-      setErrorMessage({ type: 'success', text: 'Reply sent successfully' });
+      setResponseMessage({ type: 'success', text: 'Reply sent successfully' });
       onUpdate?.();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Failed to send reply';
-      setErrorMessage({ type: 'error', text: message });
+      setResponseMessage({ type: 'error', text: message });
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteTicket = async () => {
+    if (!ticket) return;
+
+    setLoading(true);
+    try {
+      await fetchRequest(`/api/ticket/${ticket.id}`, {
+        method: 'DELETE',
+      });
+      setMessage('');
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message !==
+          "Failed to execute 'json' on 'Response': Unexpected end of JSON input"
+      ) {
+        const message =
+          error instanceof Error ? error.message : 'Failed to delete ticket';
+        setResponseMessage({ type: 'error', text: message });
+      }
+    } finally {
+      onUpdate?.();
+      onClose();
       setLoading(false);
     }
   };
@@ -145,12 +174,12 @@ export const TicketDetails = ({
         {isAdmin && <Edit />}
       </Box>
 
-      {errorMessage && (
+      {responseMessage && (
         <Alert
-          severity={errorMessage.type}
-          onClose={() => setErrorMessage(null)}
+          severity={responseMessage.type}
+          onClose={() => setResponseMessage(null)}
         >
-          {errorMessage.text}
+          {responseMessage.text}
         </Alert>
       )}
 
@@ -189,14 +218,16 @@ export const TicketDetails = ({
 
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
         <Box sx={{ display: 'grid', gap: 1.5 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Person sx={{ mr: 1 }} />
-            <Typography variant="body2">Author: {authorName}</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Person />
+            <Typography variant="body2">
+              Author: {ticket.author_name}
+            </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <AccessTime sx={{ mr: 1, color: 'text.secondary' }} />
-            <Typography variant="body2" color="text.secondary">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <AccessTime />
+            <Typography variant="body2">
               Created: {ticket.created_at}
             </Typography>
           </Box>
@@ -306,10 +337,20 @@ export const TicketDetails = ({
           <Divider sx={{ my: 2 }} />
         </>
       )}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
         <Button variant="outlined" onClick={onClose} disabled={isLoading}>
           Close
         </Button>
+        {!isAdmin && (
+          <Button
+            variant="contained"
+            onClick={deleteTicket}
+            disabled={isLoading}
+            sx={{ background: 'var(--close)' }}
+          >
+            Delete
+          </Button>
+        )}
       </Box>
     </Box>
   );
