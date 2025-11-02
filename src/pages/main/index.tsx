@@ -29,7 +29,14 @@ export const MainPage = () => {
   return (
     <>
       <Container>
-        <Box textAlign="center" sx={{ mb: 6 }}>
+        <Box
+          textAlign="center"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <SupportAgent sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
           <Typography
             variant="h3"
@@ -90,10 +97,10 @@ export const MainPage = () => {
               Go to {role === 'admin' ? 'Admin Dashboard' : 'My Tickets'}
             </Button>
           )}
+          <Button variant="text" size="large" onClick={() => setInfoOpen(true)}>
+            Open author&#39;s info
+          </Button>
         </Box>
-        <Button variant="text" size="large" onClick={() => setInfoOpen(true)}>
-          Open author&#39;s info
-        </Button>
       </Container>
       <MacWindow isOpen={isInfoOpen} onClose={() => setInfoOpen(false)}>
         <Box

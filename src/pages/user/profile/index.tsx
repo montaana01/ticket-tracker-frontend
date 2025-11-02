@@ -25,19 +25,45 @@ export const ProfilePage = () => {
       .finally(() => setLoading(false));
   }, []);
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
   if (error)
     return (
-      <Alert severity="error" variant="outlined">
-        {error}
-      </Alert>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Alert severity="error" variant="outlined">
+          {error}
+        </Alert>
+      </Box>
     );
   if (!profile)
     return (
-      <Alert severity="warning" variant="outlined">
-        No profile data available.
-      </Alert>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Alert severity="warning" variant="outlined">
+          No profile data available.
+        </Alert>
+      </Box>
     );
 
   return (

@@ -50,15 +50,18 @@ export const CreateTicketForm = ({
 
   const fieldStyles = {
     mb: 2,
-    width: '85%',
+    width: '100%',
     '& .MuiInputLabel-root': {
       color: 'var(--text-color)',
+      '&.Mui-focused': {
+        color: 'var(--text-color)',
+      },
     },
     '& .MuiOutlinedInput-root': {
       color: 'var(--text-color)',
       backgroundColor: 'var(--card-color)',
       '&.Mui-focused fieldset': {
-        borderColor: 'var(--bg-color)',
+        borderColor: 'var(--text-color)',
         color: 'var(--text-color)',
       },
       '& .MuiInputBase-input': {
@@ -67,12 +70,12 @@ export const CreateTicketForm = ({
     },
   };
 
-  if (isLoading) {
-    return <CircularProgress color="secondary" />;
-  }
-
   return (
-    <Box component="form" onSubmit={submit}>
+    <Box
+      component="form"
+      onSubmit={submit}
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
       <Typography variant="h2" typography="h5" gutterBottom>
         Create ticket
       </Typography>
@@ -81,29 +84,35 @@ export const CreateTicketForm = ({
           {error}
         </Alert>
       )}
-      <TextField
-        label="Title"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        required
-        sx={fieldStyles}
-      />
-      <TextField
-        label="Description"
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-        multiline
-        rows={6}
-        required
-        sx={fieldStyles}
-      />
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <TextField
+            label="Title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            required
+            sx={fieldStyles}
+          />
+          <TextField
+            label="Description"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            multiline
+            rows={6}
+            required
+            sx={fieldStyles}
+          />
+        </>
+      )}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          width: '85%',
-          margin: '0 auto',
+          flexWrap: 'wrap',
+          width: '100%',
           mt: 2,
         }}
       >

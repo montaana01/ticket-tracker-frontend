@@ -1,6 +1,13 @@
 .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   padding: 2rem;
+
   color: var(--text-color);
+
   background: var(--card-color);
 
   &Item {

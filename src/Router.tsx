@@ -16,14 +16,24 @@ import { SignInPage } from './pages/auth/signIn';
 import { ProfilePage } from './pages/user/profile';
 import { NotFoundPage } from './pages/notFound';
 import { useAuth } from './hooks/useAuth.ts';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 export const AuthGuard = ({ children, roles }: AuthGuardType) => {
   const { role, isLoading } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
-    return <CircularProgress color="secondary" />;
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress color="secondary" />
+      </Box>
+    );
   }
 
   if (!role) {

@@ -41,19 +41,28 @@ export const AuthForm = ({
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 6 }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        mt: 6,
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+      }}
+    >
       <Typography variant="h5" gutterBottom>
         {title}
       </Typography>
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ mb: 2, width: '100%' }}>
           {error}
         </Alert>
       )}
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ display: 'grid', gap: 2 }}
+        sx={{ display: 'grid', gap: 2, width: '100%' }}
       >
         <TextField
           label="Username"
