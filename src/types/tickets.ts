@@ -37,3 +37,8 @@ export type TicketDetailsType = {
   onClose: VoidFunction;
   onUpdate?: VoidFunction;
 };
+
+export type TagSelectorType = {
+  value?: number;
+  onChange: (id: number) => void;
+};

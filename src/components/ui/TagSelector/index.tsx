@@ -9,29 +9,20 @@ import {
   Alert,
 } from '@mui/material';
 import { fetchRequest } from '../../../helpers/fetchRequest.ts';
+import type { TagSelectorType, TagType } from '../../../types/tickets.ts';
 
-type Tag = {
-  id: number;
-  name: string;
-};
-
-type TagSelectorProps = {
-  value?: number;
-  onChange: (id: number) => void;
-};
-
-export const TagSelector = ({ value, onChange }: TagSelectorProps) => {
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [loading, setLoading] = useState(true);
+export const TagSelector = ({ value, onChange }: TagSelectorType) => {
+  const [tags, setTags] = useState<TagType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTags = async () => {
       try {
-        const data = await fetchRequest<{ data: Tag[] }>('/api/tags');
-        setTags(data.data);
-        if (data.data.length > 0 && value === undefined) {
-          const first = [...data.data].sort((a, b) => a.id - b.id)[0];
+        const response = await fetchRequest<{ data: TagType[] }>('/api/tags');
+        setTags(response.data);
+        if (response.data.length > 0 && value === undefined) {
+          const first = [...response.data].sort((a, b) => a.id - b.id)[0];
           onChange(first.id);
         }
       } catch (error) {
@@ -39,15 +30,16 @@ export const TagSelector = ({ value, onChange }: TagSelectorProps) => {
           error instanceof Error ? error.message : 'Failed to load tags';
         setError(message);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
+
     loadTags();
-  }, [onChange, value]);
+  }, []);
 
   if (error) return <Alert severity="error">{error}</Alert>;
 
-  if (loading) return <CircularProgress size={24} />;
+  if (isLoading) return <CircularProgress size={24} />;
 
   return (
     <Box sx={{ minWidth: 200 }}>
@@ -57,7 +49,7 @@ export const TagSelector = ({ value, onChange }: TagSelectorProps) => {
           labelId="tag-select-label"
           value={value ?? ''}
           label="Tag"
-          onChange={(e) => onChange(Number(e.target.value))}
+          onChange={(event) => onChange(Number(event.target.value))}
         >
           {tags.map((tag) => (
             <MenuItem key={tag.id} value={tag.id}>
