@@ -100,7 +100,7 @@ export const TicketsAdmin = () => {
   ];
 
   return (
-    <div style={{ height: 640, width: '100%' }}>
+    <div>
       <DataGrid
         rows={data}
         columns={columns}

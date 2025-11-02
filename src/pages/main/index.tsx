@@ -38,19 +38,26 @@ export const MainPage = () => {
           >
             Support Tracker
           </Typography>
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            sx={{ mb: 3, maxWidth: 600, mx: 'auto' }}
-          >
+          <Typography variant="h6" sx={{ mb: 3, maxWidth: 600, mx: 'auto' }}>
             Support tracker system with admin panel
           </Typography>
 
           <Box
-            sx={{ display: 'flex', gap: 2, justifyContent: 'center', mb: 4 }}
+            sx={{
+              display: 'flex',
+              gap: 2,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              mb: 4,
+            }}
           >
             {statusChips.map((chip) => (
-              <Chip key={chip.label} label={chip.label} variant="outlined" />
+              <Chip
+                key={chip.label}
+                label={chip.label}
+                variant="outlined"
+                sx={{ color: 'var(--text-color)' }}
+              />
             ))}
           </Box>
 
@@ -155,9 +162,7 @@ export const MainPage = () => {
             borderColor: 'divider',
           }}
         >
-          <Typography variant="body2" color="text.secondary">
-            Built by Alexey Yakovlev
-          </Typography>
+          <Typography variant="body2">Built by Alexey Yakovlev</Typography>
         </Box>
       </MacWindow>
     </>
