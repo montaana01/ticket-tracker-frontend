@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Box,
   TextField,
@@ -45,6 +45,8 @@ export const CreateTicketForm = ({
       setIsLoading(false);
     }
   };
+
+  const handleTagChange = useCallback((id: number) => setTagId(id), []);
 
   if (isLoading) {
     return <CircularProgress color="secondary" />;
@@ -96,7 +98,7 @@ export const CreateTicketForm = ({
             Cancel
           </Button>
         </Box>
-        <TagSelector value={tagId} onChange={(id) => setTagId(id)} />
+        <TagSelector value={tagId} onChange={handleTagChange} />
       </Box>
     </Box>
   );
