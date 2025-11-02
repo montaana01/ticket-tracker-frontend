@@ -2,9 +2,10 @@ import { NavLink } from 'react-router';
 import { PATHS } from '../../constants/PATHS.ts';
 import styles from './../ui/Header/header.module.scss';
 import { useAuth } from '../../hooks/useAuth.ts';
+import { CircularProgress } from '@mui/material';
 
 export const AuthButtons = () => {
-  const { role, signOut } = useAuth();
+  const { role, isLoading, signOut } = useAuth();
 
   return (
     <nav className={styles.headerNavigation}>
@@ -23,16 +24,25 @@ export const AuthButtons = () => {
           <NavLink to={PATHS.PROFILE}>User info</NavLink>
         </li>
       </ul>
-      {role ? (
-        <button onClick={signOut} className={styles.headerButtons + ' btn'}>
-          Log out
-        </button>
-      ) : (
-        <span className={styles.headerNavigationButtons}>
-          <NavLink to={PATHS.SIGN_IN}>Sign In</NavLink>
-          <NavLink to={PATHS.SIGN_UP}>Sign Up</NavLink>
-        </span>
-      )}
+      <div className={styles.headerAuth}>
+        {role ? (
+          isLoading ? (
+            <CircularProgress />
+          ) : (
+            <button
+              onClick={signOut}
+              className={styles.headerNavigationButtons + ' btn'}
+            >
+              Log out
+            </button>
+          )
+        ) : (
+          <span className={styles.headerNavigationButtons}>
+            <NavLink to={PATHS.SIGN_IN}>Sign In</NavLink>
+            <NavLink to={PATHS.SIGN_UP}>Sign Up</NavLink>
+          </span>
+        )}
+      </div>
     </nav>
   );
 };

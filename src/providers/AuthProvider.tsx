@@ -10,6 +10,7 @@ import type {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const checkAuth = async (): Promise<void> => {
     setIsLoading(true);
@@ -18,6 +19,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         '/auth/check'
       );
       setRole(response.data.role);
+      setAuthError(null);
     } catch {
       setRole(null);
     } finally {
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string
   ): Promise<AuthResponse> => {
     setIsLoading(true);
+    setAuthError(null);
     try {
       const response = await fetchRequest<SignInServerResponse>(
         '/auth/sign-in',
@@ -46,6 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { success: true, role: response.data.role };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Sign in failed';
+      setAuthError(message);
       return {
         success: false,
         error: message,
@@ -60,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string
   ): Promise<AuthResponse> => {
     setIsLoading(true);
+    setAuthError(null);
     try {
       await fetchRequest<SignUpServerResponse>('/auth/sign-up', {
         method: 'POST',
@@ -76,6 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { success: true, role: response.data.role };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Sign up failed';
+      setAuthError(message);
       return {
         success: false,
         error: message,
@@ -93,12 +99,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Sign out error:');
     } finally {
       setRole(null);
+      setAuthError(null);
       setIsLoading(false);
     }
   };
 
+  const removeErrors = () => setAuthError(null);
+
   return (
-    <AuthContext.Provider value={{ role, isLoading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        role,
+        isLoading,
+        authError,
+        signIn,
+        signUp,
+        signOut,
+        removeErrors,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

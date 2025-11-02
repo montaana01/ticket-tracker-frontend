@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../../hooks/useAuth.ts';
 import { PATHS } from '../../../constants/PATHS.ts';
 import { AuthForm } from '../../../components/ui/AuthForm';
-import { CircularProgress } from '@mui/material';
 
 export const SignUpPage = () => {
-  const { role, isLoading, signUp } = useAuth();
+  const { role, isLoading, signUp, authError, removeErrors } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     if (role) {
       navigate(PATHS.HOME);
@@ -17,15 +14,16 @@ export const SignUpPage = () => {
   });
 
   const handleSubmit = async (data: { username: string; password: string }) => {
-    setError(null);
-
-    const result = await signUp(data.username, data.password);
-    if (!result.success) {
-      setError(result.error || 'Error while registration');
-    }
+    removeErrors();
+    await signUp(data.username, data.password);
   };
 
-  if (isLoading) return <CircularProgress color="secondary" />;
-
-  return <AuthForm title="Sign up" error={error} onSubmit={handleSubmit} />;
+  return (
+    <AuthForm
+      title="Sign up"
+      error={authError}
+      loading={isLoading}
+      onSubmit={handleSubmit}
+    />
+  );
 };

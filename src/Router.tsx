@@ -38,12 +38,8 @@ export const AuthGuard = ({ children, roles }: AuthGuardType) => {
 };
 
 export const PublicOnlyRoute = ({ children }: PublicOnlyGuardType) => {
-  const { role, isLoading } = useAuth();
+  const { role } = useAuth();
   const location = useLocation();
-
-  if (isLoading) {
-    return <CircularProgress color="secondary" />;
-  }
 
   if (role) {
     const from = location.state?.from?.pathname || PATHS.HOME;

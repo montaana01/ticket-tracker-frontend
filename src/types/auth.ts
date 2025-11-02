@@ -9,9 +9,11 @@ export type AuthResponse = {
 export type AuthContextType = {
   role: string | null;
   isLoading: boolean;
+  authError: string | null;
   signIn: (username: string, password: string) => Promise<AuthResponse>;
   signUp: (username: string, password: string) => Promise<AuthResponse>;
   signOut: () => Promise<void>;
+  removeErrors: VoidFunction;
 };
 
 export type AuthGuardType = {
@@ -26,6 +28,7 @@ export type PublicOnlyGuardType = {
 export type AuthFormProps = {
   title: string;
   error: string | null;
+  loading?: boolean;
   onSubmit: (data: {
     username: string;
     password: string;

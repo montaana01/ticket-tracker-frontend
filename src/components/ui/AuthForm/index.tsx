@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Container,
   TextField,
   Typography,
@@ -9,7 +10,12 @@ import {
 import { useState } from 'react';
 import type { AuthFormProps } from '../../../types/auth.ts';
 
-export const AuthForm = ({ title, error, onSubmit }: AuthFormProps) => {
+export const AuthForm = ({
+  title,
+  error,
+  loading = false,
+  onSubmit,
+}: AuthFormProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -38,6 +44,7 @@ export const AuthForm = ({ title, error, onSubmit }: AuthFormProps) => {
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           required
+          disabled={loading}
         />
         <TextField
           label="Password"
@@ -45,11 +52,13 @@ export const AuthForm = ({ title, error, onSubmit }: AuthFormProps) => {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required
+          disabled={loading}
         />
-        <Button variant="contained" type="submit">
-          {title}
+        <Button variant="contained" type="submit" disabled={loading}>
+          {loading ? 'Loading...' : title}
         </Button>
       </Box>
+      {loading && <CircularProgress sx={{ mt: 2 }} />}
     </Container>
   );
 };
