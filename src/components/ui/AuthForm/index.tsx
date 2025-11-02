@@ -24,6 +24,22 @@ export const AuthForm = ({
     onSubmit({ username, password });
   };
 
+  const fieldStyles = {
+    '& .MuiInputLabel-root': {
+      color: 'var(--text-color)',
+    },
+    '& .MuiOutlinedInput-root': {
+      color: 'var(--text-color)',
+      '&.Mui-focused fieldset': {
+        borderColor: 'var(--text-color)',
+        color: 'var(--text-color)',
+      },
+      '& .MuiInputBase-input': {
+        color: 'var(--text-color)',
+      },
+    },
+  };
+
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
       <Typography variant="h5" gutterBottom>
@@ -45,6 +61,7 @@ export const AuthForm = ({
           onChange={(event) => setUsername(event.target.value)}
           required
           disabled={loading}
+          sx={fieldStyles}
         />
         <TextField
           label="Password"
@@ -53,6 +70,7 @@ export const AuthForm = ({
           onChange={(event) => setPassword(event.target.value)}
           required
           disabled={loading}
+          sx={fieldStyles}
         />
         <Button variant="contained" type="submit" disabled={loading}>
           {loading ? 'Loading...' : title}
