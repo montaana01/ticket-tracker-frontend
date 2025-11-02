@@ -1,5 +1,5 @@
 import { MacWindow } from '../../components/MacWindow';
-import { Link, Box, Typography, Button, Chip, Container } from '@mui/material';
+import { Link, Box, Typography, Button, Chip } from '@mui/material';
 import {
   LocationOn,
   Phone,
@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router';
 import { PATHS } from '../../constants/PATHS';
 import { useAuth } from '../../hooks/useAuth';
 import { useState } from 'react';
+import { Container } from '../../components/ui/Container';
 
 export const MainPage = () => {
   const [isInfoOpen, setInfoOpen] = useState(false);
@@ -27,7 +28,7 @@ export const MainPage = () => {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container>
         <Box textAlign="center" sx={{ mb: 6 }}>
           <SupportAgent sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
           <Typography

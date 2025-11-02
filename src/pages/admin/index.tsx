@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Tabs, Tab, Box, Container } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { TicketsAdmin } from '../../components/admin/TicketsAdmin';
 import { TagsAdmin } from '../../components/admin/TagsAdmin';
 import { StatusesAdmin } from '../../components/admin/StatusesAdmin';
+import { Container } from '../../components/ui/Container';
 
 const two = 2;
 

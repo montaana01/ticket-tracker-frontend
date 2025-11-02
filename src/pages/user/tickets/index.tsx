@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, Container, Typography } from '@mui/material';
+import { Alert, Box, Button, Typography } from '@mui/material';
 import type { TicketType } from '../../../types/tickets.ts';
 import { fetchRequest } from '../../../helpers/fetchRequest.ts';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { MacWindow } from '../../../components/MacWindow';
 import { CreateTicketForm } from '../../../components/ui/TicketForm';
 import { TicketDetails } from '../../../components/TicketModal';
+import { Container } from '../../../components/ui/Container';
 
 export const TicketsPage = () => {
   const [tickets, setTickets] = useState<TicketType[]>([]);
@@ -57,6 +58,11 @@ export const TicketsPage = () => {
       width: 60,
     },
     {
+      field: 'status_name',
+      headerName: 'Status',
+      width: 100,
+    },
+    {
       field: 'title',
       headerName: 'Title',
       width: 200,
@@ -73,6 +79,7 @@ export const TicketsPage = () => {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            textAlign: 'left',
             width: '100%',
           }}
         >
@@ -81,13 +88,13 @@ export const TicketsPage = () => {
       ),
     },
     {
-      field: 'status_name',
-      headerName: 'Status',
-      width: 130,
+      field: 'tag_name',
+      headerName: 'Tag',
+      width: 100,
     },
     {
       field: 'created_at',
-      headerName: 'Created',
+      headerName: 'Created at',
       renderCell: (params) => new Date(params.value).toLocaleDateString(),
       width: 120,
     },
@@ -126,6 +133,7 @@ export const TicketsPage = () => {
         <TicketDetails
           ticket={selectedTicket}
           isAdmin={false}
+          onUpdate={load}
           onClose={handleCloseDetailsModal}
         />
       </MacWindow>

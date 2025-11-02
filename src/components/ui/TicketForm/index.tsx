@@ -59,6 +59,7 @@ export const CreateTicketForm = ({
       backgroundColor: 'var(--card-color)',
       '&.Mui-focused fieldset': {
         borderColor: 'var(--bg-color)',
+        color: 'var(--text-color)',
       },
       '& .MuiInputBase-input': {
         color: 'var(--text-color)',
