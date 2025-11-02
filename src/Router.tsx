@@ -27,7 +27,7 @@ export const AuthGuard = ({ children, roles }: AuthGuardType) => {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
       >

@@ -29,7 +29,7 @@ export const ProfilePage = () => {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
       >
@@ -42,7 +42,7 @@ export const ProfilePage = () => {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
       >
@@ -56,7 +56,7 @@ export const ProfilePage = () => {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
       >

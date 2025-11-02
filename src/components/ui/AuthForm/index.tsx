@@ -27,6 +27,9 @@ export const AuthForm = ({
   const fieldStyles = {
     '& .MuiInputLabel-root': {
       color: 'var(--text-color)',
+      '&.Mui-focused': {
+        color: 'var(--text-color)',
+      },
     },
     '& .MuiOutlinedInput-root': {
       color: 'var(--text-color)',
