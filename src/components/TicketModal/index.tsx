@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Box,
   Typography,
@@ -89,57 +89,63 @@ export const TicketDetails = ({
     }
   }, [isAdmin, ticket]);
 
-  const handleApiCall = async (
-    apiCall: () => Promise<void>,
-    successMessage: string
-  ) => {
-    if (!ticket) return;
+  const handleApiCall = useCallback(
+    async (apiCall: () => Promise<void>, successMessage: string) => {
+      if (!ticket) return;
 
-    setLoading(true);
-    setResponseMessage(null);
+      setLoading(true);
+      setResponseMessage(null);
 
-    try {
-      await apiCall();
-      setResponseMessage({ type: 'success', text: successMessage });
-      onUpdate?.();
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Operation failed';
-      setResponseMessage({ type: 'error', text: message });
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        await apiCall();
+        setResponseMessage({ type: 'success', text: successMessage });
+        onUpdate?.();
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : 'Operation failed';
+        setResponseMessage({ type: 'error', text: message });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [ticket, onUpdate]
+  );
 
-  const changeStatus = async (newStatus: number) => {
-    if (!ticket) return;
+  const changeStatus = useCallback(
+    async (newStatus: number) => {
+      if (!ticket) return;
 
-    await handleApiCall(
-      () =>
-        fetchRequest(`/api/admin/ticket/${ticket.id}/status`, {
-          method: 'PUT',
-          body: JSON.stringify({ status_id: newStatus }),
-        }),
-      'Status updated successfully'
-    );
-    setSelectedStatus(newStatus);
-  };
+      await handleApiCall(
+        () =>
+          fetchRequest(`/api/admin/ticket/${ticket.id}/status`, {
+            method: 'PUT',
+            body: JSON.stringify({ status_id: newStatus }),
+          }),
+        'Status updated successfully'
+      );
+      setSelectedStatus(newStatus);
+    },
+    [ticket, handleApiCall]
+  );
 
-  const changeTag = async (newTag: number) => {
-    if (!ticket) return;
+  const changeTag = useCallback(
+    async (newTag: number) => {
+      if (!ticket) return;
 
-    await handleApiCall(
-      () =>
-        fetchRequest(`/api/admin/ticket/${ticket.id}/tag`, {
-          method: 'PUT',
-          body: JSON.stringify({ tag_id: newTag }),
-        }),
-      'Tag updated successfully'
-    );
-    setSelectedTag(newTag);
-  };
+      await handleApiCall(
+        () =>
+          fetchRequest(`/api/admin/ticket/${ticket.id}/tag`, {
+            method: 'PUT',
+            body: JSON.stringify({ tag_id: newTag }),
+          }),
+        'Tag updated successfully'
+      );
+      setSelectedTag(newTag);
+    },
+    [ticket, handleApiCall]
+  );
 
-  const sendMessage = async () => {
+  const sendMessage = useCallback(async () => {
     if (!messageText.trim()) return;
     if (!ticket) return;
 
@@ -159,9 +165,9 @@ export const TicketDetails = ({
       setTicketMessage(messageToSend);
     }
     setMessageText('');
-  };
+  }, [messageText, ticket, handleApiCall, responseMessage]);
 
-  const deleteTicket = async () => {
+  const deleteTicket = useCallback(async () => {
     if (!ticket) return;
 
     setLoading(true);
@@ -186,37 +192,45 @@ export const TicketDetails = ({
       onClose();
       setLoading(false);
     }
-  };
+  }, [ticket, onUpdate, onClose]);
 
-  const getStatusName = () => {
+  const handleStatusChange = useCallback((newStatus: number) => {
+    setSelectedStatus(newStatus);
+  }, []);
+
+  const handleTagChange = useCallback((newTag: number) => {
+    setSelectedTag(newTag);
+  }, []);
+
+  const getStatusName = useCallback(() => {
     if (!ticket) return;
     if (ticket.status_name) return ticket.status_name;
     if (isAdminDataLoading) return '';
     const status = statuses.find((s) => s.id === ticket.status_id);
     return status?.name || '';
-  };
+  }, [ticket, isAdminDataLoading, statuses]);
 
-  const getTagName = () => {
+  const getTagName = useCallback(() => {
     if (!ticket) return;
     if (ticket.tag_name) return ticket.tag_name;
     if (isAdminDataLoading) return '';
     const tag = tags.find((t) => t.id === ticket.tag_id);
     return tag?.name || '';
-  };
+  }, [ticket, isAdminDataLoading, tags]);
 
-  const getAuthorName = () => {
+  const getAuthorName = useCallback(() => {
     if (!ticket) return;
     if (ticket.author_name) return ticket.author_name;
     if (isAdminDataLoading) return '';
     return ticketAuthorName;
-  };
+  }, [ticket, isAdminDataLoading, ticketAuthorName]);
 
-  const getMessage = () => {
+  const getMessage = useCallback(() => {
     if (!ticket) return;
     if (ticket.message_text) return ticket.message_text;
     if (isAdminDataLoading) return '';
     return ticketMessage;
-  };
+  }, [ticket, isAdminDataLoading, ticketMessage]);
 
   if (!ticket) {
     return (
@@ -380,7 +394,10 @@ export const TicketDetails = ({
               }}
             >
               <Typography variant="body2">Status: {getStatusName()}</Typography>
-              <StatusSelector value={selectedStatus} onChange={changeStatus} />
+              <StatusSelector
+                value={selectedStatus}
+                onChange={handleStatusChange}
+              />
               <Button
                 variant="contained"
                 size="small"
@@ -400,7 +417,7 @@ export const TicketDetails = ({
               }}
             >
               <Typography variant="body2">Tag: {getTagName()}</Typography>
-              <TagSelector value={selectedTag} onChange={setSelectedTag} />
+              <TagSelector value={selectedTag} onChange={handleTagChange} />
               <Button
                 variant="contained"
                 size="small"
