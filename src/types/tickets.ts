@@ -8,6 +8,13 @@ export type StatusType = {
   name: string;
 };
 
+export type MessageType = {
+  id: number;
+  message: string;
+  author_id: number;
+  ticket_id: number;
+};
+
 export type TicketType = {
   id: number;
   title: string;
@@ -39,6 +46,11 @@ export type TicketDetailsType = {
 };
 
 export type TagSelectorType = {
+  value?: number;
+  onChange: (id: number) => void;
+};
+
+export type StatusSelectorType = {
   value?: number;
   onChange: (id: number) => void;
 };
