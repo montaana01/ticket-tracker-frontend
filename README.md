@@ -1,4 +1,4 @@
-# Ticket tracker based on React on front and php on back side. Technical support developer at Amasty - Test task
+# Ticket tracker based on React on front and php on back side.
 
 ## Описание реализуемого мини-проекта
 
